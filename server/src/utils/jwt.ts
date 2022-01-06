@@ -9,7 +9,7 @@ interface TokenPayload {
 
 export const generateRefreshToken = (
   data = {},
-  expiresIn: string | number = '7d',
+  expiresIn: string | number = '1d',
 ) => {
   const token = jwt.sign({ data }, jwtRefreshTokenSecret!, {
     expiresIn,
@@ -23,7 +23,7 @@ export const generateRefreshToken = (
 
 export const generateAccessToken = (
   data = {},
-  expiresIn: string | number = '1m',
+  expiresIn: string | number = '15m',
 ) => {
   const token = jwt.sign({ data }, jwtAccessTokenSecret!, {
     expiresIn,

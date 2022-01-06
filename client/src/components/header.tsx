@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Flex,
   Image,
   Menu,
@@ -8,10 +7,7 @@ import {
   MenuItem,
   MenuList,
 } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
 
-import { LightIcon, NotificationIcon } from '../assets/icons';
-import logo from '../assets/images/logo.svg';
 import userImage from '../assets/images/user-image.png';
 import { useLogout } from '../services/auth.api';
 
@@ -30,30 +26,11 @@ export default function Header() {
       <Flex
         bg="secondary.500"
         alignItems="center"
-        justifyContent="space-between"
+        justifyContent="flex-end"
         px="2"
         height="64px"
       >
-        <Image width="160px" src={logo} alt="Logo" />
         <Flex alignItems="center">
-          <Button
-            as={Link}
-            to="/pages"
-            variant="link"
-            bg="primary.light"
-            color="white"
-          >
-            <NotificationIcon />
-          </Button>
-          <Button
-            as={Link}
-            to="/pages"
-            variant="link"
-            bg="primary.light"
-            color="white"
-          >
-            <LightIcon />
-          </Button>
           <Menu>
             <MenuButton ml="2">
               <Image width="40px" src={userImage} alt="user image profile" />

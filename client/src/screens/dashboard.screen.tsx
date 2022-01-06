@@ -1,5 +1,15 @@
-import { Box, Grid, Heading } from '@chakra-ui/react';
+import { Heading, Container } from '@chakra-ui/react';
+import { useProtectedApi } from '../services/protected.api';
+import { PreLoader } from '../components';
 
 export default function Dashboard() {
-  return <Heading>You are in!</Heading>;
+  const { isLoading } = useProtectedApi();
+
+  return (
+    <PreLoader isLoading={isLoading}>
+      <Container>
+        <Heading mt="40vh">Congratulations! You are in!</Heading>
+      </Container>
+    </PreLoader>
+  );
 }

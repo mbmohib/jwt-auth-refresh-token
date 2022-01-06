@@ -6,5 +6,5 @@ import { renderWithRouter as render } from '../../utils/test';
 test('show dashboard page data', () => {
   render(<Dashboard />);
 
-  expect(screen.getByText(/site analytics/i)).toBeInTheDocument();
+  expect(screen.getByText(/Congratulations! You are in!/i)).toBeInTheDocument();
 });

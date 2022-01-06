@@ -4,7 +4,7 @@ import {
   generateAccessToken,
   verifyToken,
 } from '../utils/jwt';
-import { jwtRefreshTokenSecret } from '../config';
+import { jwtRefreshTokenSecret, refreshTokenMaxAge } from '../config';
 
 export const login: RequestHandler = async (req: Request, res: Response) => {
   // verify email and password
@@ -16,6 +16,7 @@ export const login: RequestHandler = async (req: Request, res: Response) => {
 
   res.cookie('rt', refreshToken, {
     httpOnly: true,
+    maxAge: refreshTokenMaxAge,
   });
 
   res.status(200).json({
@@ -41,7 +42,13 @@ export const refreshToken: RequestHandler = async (
     const payload = verifyToken(refreshToken, jwtRefreshTokenSecret!);
 
     const user = payload?.data;
+    const { token: newRefreshToken } = generateRefreshToken(user);
     const { token } = generateAccessToken(user);
+
+    res.cookie('rt', newRefreshToken, {
+      httpOnly: true,
+      maxAge: refreshTokenMaxAge,
+    });
 
     res.status(200).json({
       data: {

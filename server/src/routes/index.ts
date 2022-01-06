@@ -8,6 +8,6 @@ const router = Router();
 router.post('/login', authController.login);
 router.post('/logout', authController.logout);
 router.post('/refresh-token', authController.refreshToken);
-router.get('/site', isAuthenticated, authController.checkProtected);
+router.get('/protected', isAuthenticated, authController.checkProtected);
 
 export default router;
