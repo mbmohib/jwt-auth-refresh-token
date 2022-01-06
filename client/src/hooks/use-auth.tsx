@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useState } from 'react';
-
-import { Auth } from '../types';
+import jwtDecode from 'jwt-decode';
+import { Auth, Token } from '../types';
 
 interface AuthContextState extends Auth {
   setAuth: (data: Auth) => void;
@@ -22,7 +22,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [authData, setAuthData] = useState<Auth>(initialAuthState);
 
   const setAuth = (data: Auth) => {
-    setAuthData(data);
+    if (!data.token) {
+      return initialAuthState;
+    }
+
+    const decoded: Token = jwtDecode(data.token);
+    setAuthData({ ...data, isAuthenticated: true, expiredIn: decoded.exp });
   };
 
   const removeAuth = () => {
