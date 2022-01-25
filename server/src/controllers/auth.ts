@@ -9,23 +9,29 @@ import { jwtRefreshTokenSecret, refreshTokenMaxAge } from '../config';
 export const login: RequestHandler = async (req: Request, res: Response) => {
   // verify email and password
   // get user info from db
-  const user = { email: 'me@example.com' };
+  try {
+    const user = { email: 'me@example.com' };
 
-  const { token: refreshToken } = generateRefreshToken(user);
-  const { token } = generateAccessToken(user);
+    const { token: refreshToken } = generateRefreshToken(user);
+    const { token } = generateAccessToken(user);
 
-  res.cookie('rt', refreshToken, {
-    httpOnly: true,
-    maxAge: refreshTokenMaxAge,
-  });
+    res.cookie('rt', refreshToken, {
+      httpOnly: true,
+      maxAge: refreshTokenMaxAge,
+    });
 
-  res.status(200).json({
-    data: {
-      user,
-      token,
-    },
-    message: 'Logging successful',
-  });
+    res.status(200).json({
+      data: {
+        user,
+        token,
+      },
+      message: 'Logging successful',
+    });
+  } catch (err) {
+    res.status(401).json({
+      message: 'Login failed',
+    });
+  }
 };
 
 export const refreshToken: RequestHandler = async (
@@ -58,22 +64,28 @@ export const refreshToken: RequestHandler = async (
       message: 'Token fetched successfully',
     });
   } catch (err) {
-    res.status(err as number).json({
-      message: 'Failed',
+    res.status(401).json({
+      message: 'Login failed',
     });
   }
 };
 
 export const logout: RequestHandler = async (req: Request, res: Response) => {
-  res.cookie('rt', '', {
-    httpOnly: true,
-    maxAge: 0,
-  });
+  try {
+    res.cookie('rt', '', {
+      httpOnly: true,
+      maxAge: 0,
+    });
 
-  res.status(200).json({
-    data: {},
-    message: 'Logout successfully',
-  });
+    res.status(200).json({
+      data: {},
+      message: 'Logout successfully',
+    });
+  } catch (err) {
+    res.status(401).json({
+      message: 'Login failed',
+    });
+  }
 };
 
 export const checkProtected: RequestHandler = async (
@@ -88,8 +100,8 @@ export const checkProtected: RequestHandler = async (
       message: 'You have accessed protected info successfully',
     });
   } catch (err) {
-    res.status(err as number).json({
-      message: 'Failed',
+    res.status(500).json({
+      message: 'Something went wrong!',
     });
   }
 };
