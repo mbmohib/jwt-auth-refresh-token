@@ -18,6 +18,7 @@ export const login: RequestHandler = async (req: Request, res: Response) => {
     res.cookie('rt', refreshToken, {
       httpOnly: true,
       maxAge: refreshTokenMaxAge,
+      path: '/refresh-token',
     });
 
     res.status(200).json({
@@ -54,6 +55,7 @@ export const refreshToken: RequestHandler = async (
     res.cookie('rt', newRefreshToken, {
       httpOnly: true,
       maxAge: refreshTokenMaxAge,
+      path: '/refresh-token',
     });
 
     res.status(200).json({
@@ -75,6 +77,7 @@ export const logout: RequestHandler = async (req: Request, res: Response) => {
     res.cookie('rt', '', {
       httpOnly: true,
       maxAge: 0,
+      path: '/refresh-token',
     });
 
     res.status(200).json({
